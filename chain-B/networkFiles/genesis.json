@@ -1,0 +1,40 @@
+{
+  "config" : {
+    "chainId" : 2337,
+    "berlinBlock" : 0,
+    "qbft" : {
+      "blockperiodseconds" : 2,
+      "epochlength" : 30000,
+      "requesttimeoutseconds" : 4
+    }
+  },
+  "nonce" : "0x0",
+  "timestamp" : "0x58ee40ba",
+  "gasLimit" : "0x47b760",
+  "difficulty" : "0x1",
+  "mixHash" : "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
+  "coinbase" : "0x0000000000000000000000000000000000000000",
+  "alloc" : {
+    "fe3b557e8fb62b89f4916b721be55ceb828dbd73" : {
+      "privateKey" : "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+      "comment" : "main wallet chain B",
+      "balance" : "0xad78ebc5ac6200000"
+    },
+    "0x813BF29E6a7833C5B9A8eAaf70C9151c323521bE" : {
+      "privateKey" : "8fcc611a526f6fbc88b56c50b9ebecc72f6b84c8f6c977aeec612f9d13531c30",
+      "comment" : "comission fee wallet 1",
+      "balance" : "0"
+    },
+    "0x4192b5fE1fE373Fe319CE9108Cb9fb897F8b8eff" : {
+      "privateKey" : "d9b3c91122dc67ea1bbe81b64aaa1ec54b55030a3e771ec37eb455d32be50d9e",
+      "comment" : "comission fee wallet 2",
+      "balance" : "0"
+    },
+    "0x29D0Bf87fd67f6D655D9e2D96124ccfA12Dac919" : {
+      "privateKey" : "ebc28f206e56775394cfefd8a1723d2b03799b5ace6fbf793e8ef10edc2795c6",
+      "comment" : "comission fee wallet 3",
+      "balance" : "0"
+    }
+  },
+  "extraData" : "0xf87aa00000000000000000000000000000000000000000000000000000000000000000f85494c7250f8efe9145f9e4087355d773c4e56fac62dd942d7470ea2344babd15616a0e2287c8b9b318a12e9490b74d275f2e3326829d4de6b64aa4e6240a8333948c0e1906ba422e540258e1190904f2183a3894afc080c0"
+}

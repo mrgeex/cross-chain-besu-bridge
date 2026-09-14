@@ -1,0 +1,98 @@
+x-besu-common: &besu-common
+  image: hyperledger/besu:latest
+  restart: unless-stopped
+  command:
+    - --genesis-file=/config/genesis.json
+    - --data-path=/var/lib/besu
+    - --node-private-key-file=/keys/priv_key
+    - --static-nodes-file=/config/static-nodes.json
+    - --discovery-enabled=false
+    - --p2p-host=0.0.0.0
+    - --p2p-port=30303
+    - --permissions-nodes-config-file-enabled=true
+    - --permissions-accounts-config-file-enabled=true
+    - --rpc-http-enabled=true
+    - --rpc-http-host=0.0.0.0
+    - --rpc-http-port=8545
+    - --rpc-http-api=ETH,NET,WEB3,QBFT,ADMIN,PERM
+    - --rpc-http-cors-origins=all
+    - --rpc-ws-enabled=true
+    - --rpc-ws-host=0.0.0.0
+    - --rpc-ws-port=8546
+    - --rpc-ws-api=ETH,NET,WEB3,QBFT
+    - --host-allowlist=all
+    - --min-gas-price=0
+    - --revert-reason-enabled=true
+  networks:
+    - chain-b-qbft
+
+services:
+  chain-b-validator-1:
+    <<: *besu-common
+    container_name: chain-b-validator-1
+    volumes:
+      - chain-b-validator-1-data:/var/lib/besu
+      - ./networkFiles/genesis.json:/config/genesis.json:ro
+      - ./static-nodes.json:/config/static-nodes.json:ro
+      - ./permissions_config.toml:/var/lib/besu/permissions_config.toml
+      - ./networkFiles/nodes/validator-1:/keys:ro
+    ports:
+      - "28545:8545"
+      - "28546:8546"
+    #      - "32303:32303/tcp"
+    #      - "32303:32303/udp"
+    networks:
+      chain-b-qbft:
+        ipv4_address: 172.29.0.11
+
+  chain-b-validator-2:
+    <<: *besu-common
+    container_name: chain-b-validator-2
+    volumes:
+      - chain-b-validator-2-data:/var/lib/besu
+      - ./networkFiles/genesis.json:/config/genesis.json:ro
+      - ./static-nodes.json:/config/static-nodes.json:ro
+      - ./permissions_config.toml:/var/lib/besu/permissions_config.toml
+      - ./networkFiles/nodes/validator-2:/keys:ro
+    networks:
+      chain-b-qbft:
+        ipv4_address: 172.29.0.12
+
+  chain-b-validator-3:
+    <<: *besu-common
+    container_name: chain-b-validator-3
+    volumes:
+      - chain-b-validator-3-data:/var/lib/besu
+      - ./networkFiles/genesis.json:/config/genesis.json:ro
+      - ./static-nodes.json:/config/static-nodes.json:ro
+      - ./permissions_config.toml:/var/lib/besu/permissions_config.toml
+      - ./networkFiles/nodes/validator-3:/keys:ro
+    networks:
+      chain-b-qbft:
+        ipv4_address: 172.29.0.13
+
+  chain-b-validator-4:
+    <<: *besu-common
+    container_name: chain-b-validator-4
+    volumes:
+      - chain-b-validator-4-data:/var/lib/besu
+      - ./networkFiles/genesis.json:/config/genesis.json:ro
+      - ./static-nodes.json:/config/static-nodes.json:ro
+      - ./permissions_config.toml:/var/lib/besu/permissions_config.toml
+      - ./networkFiles/nodes/validator-4:/keys:ro
+    networks:
+      chain-b-qbft:
+        ipv4_address: 172.29.0.14
+
+networks:
+  chain-b-qbft:
+    name: chain-b-qbft
+    ipam:
+      config:
+        - subnet: 172.29.0.0/24
+
+volumes:
+  chain-b-validator-1-data:
+  chain-b-validator-2-data:
+  chain-b-validator-3-data:
+  chain-b-validator-4-data:

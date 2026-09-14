@@ -1,21 +1,16 @@
-#include:
-#  - path: ./chain-A/docker-compose.yaml
-#  - path: ./chain-B/docker-compose.yaml
+include:
+  - path: ./chain-A/docker-compose.yaml
+  - path: ./chain-B/docker-compose.yaml
 
-services:
-  besu-init: # creating the private keys and genesis files
-    image: hyperledger/besu:latest
-    volumes:
-      - ./chain-B:/config
-    command:
-      - operator
-      - generate-blockchain-config
-      - --config-file=/config/qbftConfigFile.json
-      - --to=/config/networkFiles
-      - --private-key-file-name=priv_key
-#  relayer:
-#    build: blahblah:latest
-#
-#    networks:
-#      - chain-a
-#      - chain-b
+#services:
+  # creating the private keys and genesis files
+#  besu-init:
+#    image: hyperledger/besu:latest
+#    volumes:
+#      - ./helloworld:/config
+#    command:
+#      - operator
+#      - generate-blockchain-config
+#      - --config-file=/config/qbftConfigFile.json
+#      - --to=/config/networkFiles
+#      - --private-key-file-name=priv_key
