@@ -1,5 +1,4 @@
 import hre from "hardhat";
-const { ethers, network } = hre;
 
 async function deployHello({ deployments, getNamedAccounts }) {
   const { deploy } = deployments;
@@ -7,5 +6,7 @@ async function deployHello({ deployments, getNamedAccounts }) {
 
   await deploy("justTesting", { from: deployer, args: [], log: true });
 }
+
+deployHello.tags = ["hello"];
 
 export default deployHello;

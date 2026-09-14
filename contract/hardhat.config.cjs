@@ -11,13 +11,13 @@ module.exports = {
     hardhat: {
       chainId: 31337,
     },
-    besu_chain_A: {
+    chain_a: {
       url: process.env.CHAIN_A_RPC_URL,
       accounts: [process.env.CHAIN_A_PRIV_KEY],
       chainId: 1337,
       gasPrice: 0,
     },
-    besu_chain_B: {
+    chain_b: {
       url: process.env.CHAIN_B_RPC_URL,
       accounts: [process.env.CHAIN_B_PRIV_KEY],
       chainId: 2337,
