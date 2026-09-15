@@ -35,6 +35,11 @@
         "privateKey": "ebc28f206e56775394cfefd8a1723d2b03799b5ace6fbf793e8ef10edc2795c6",
         "comment": "comission fee wallet 3",
         "balance": "0"
+      },
+      "0x71076F86D6AE15caf1C9595b959d7be882ff78ee": {
+        "privateKey": "d8527d7f9437c7d90a8271d652439d6fba9f8678da47aa02ce644680aae47e17",
+        "comment": "just a wallet",
+        "balance": "0"
       }
     }
   },
