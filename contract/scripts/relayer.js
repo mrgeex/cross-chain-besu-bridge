@@ -1,6 +1,7 @@
 import hre from "hardhat";
 import bridgeA from "../deployments/chain_a/BridgeA.json" with { type: "json" };
 import bridgeB from "../deployments/chain_b/BridgeB.json" with { type: "json" };
+import env from "hardhat";
 
 const { ethers } = hre;
 
@@ -20,54 +21,45 @@ async function main() {
     `\n >>>Total Amount Locked on Chain A: ${ethers.formatEther(await chainA.getBalance(bridgeA.address))} ETH\n`,
   );
 
-  // call transfer function on contractA
-  const trxA = await contractA.transfer(
-    signerB.address,
-    ethers.parseEther("30"),
-    { value: ethers.parseEther("30") },
-  );
-  const trxAReceipt = await trxA.wait();
-
   // listen for Locked event
-  contractA.on("Locked", async (sender, message, timestamp, event) => {
+  contractA.on("Locked", async (from, to, sendValue, event) => {
     const amount = event.args.sendValue;
     console.log(`----${event.eventName} ${ethers.formatEther(amount)} ETH----`);
-    console.log(`  - from ${sender}`);
-    console.log(`  - to ${event.args.to}`);
-    console.log(`  - amount ${event.args.sendValue}`);
+    console.log(`  - from ${from}`);
+    console.log(`  - to ${to}`);
+    console.log(`  - amount ${ethers.formatEther(sendValue)} ETH`);
     console.log("----------------");
     // >>>> Call transfer function on chain-B and set (to, 0.9 of the amount)
     // >>>> Divide 0.1 of the amount to 3 and transfer to 3 commission wallets on chain-B
-    const sendValue = (amount * 90n) / 100n;
-    const trxFee = amount - sendValue;
+    const receiveValue = (amount * 90n) / 100n;
+    const trxFee = amount - receiveValue;
     const fee1 = trxFee / 3n;
     const fee2 = trxFee / 3n;
     const fee3 = trxFee - fee1 - fee2;
-    const trxB = await contractB.transfer(
-      sendValue,
-      event.args.to,
-      fee1,
-      fee2,
-      fee3,
-      { value: amount },
-    );
-    const trxBReceipt = await trxB.wait();
+    const trxB = await contractB.transfer(receiveValue, to, fee1, fee2, fee3, {
+      value: amount,
+    });
+    await trxB.wait();
 
-    const balanceB = await chainB.getBalance(event.args.to);
-    const balanceFee1 = await chainB.getBalance(
-      "0x813BF29E6a7833C5B9A8eAaf70C9151c323521bE",
-    );
-    const balanceFee2 = await chainB.getBalance(
-      "0x4192b5fE1fE373Fe319CE9108Cb9fb897F8b8eff",
-    );
-    const balanceFee3 = await chainB.getBalance(
-      "0x29D0Bf87fd67f6D655D9e2D96124ccfA12Dac919",
-    );
+    const balanceB = await chainB.getBalance(to);
+    const balanceFee1 = await chainB.getBalance(process.env.FEE_WALLET1);
+    const balanceFee2 = await chainB.getBalance(process.env.FEE_WALLET2);
+    const balanceFee3 = await chainB.getBalance(process.env.FEE_WALLET3);
     console.log(` - new balance \(${ethers.formatEther(balanceB)}\) ETH`);
     console.log(` - fee wallet 1 \(${ethers.formatEther(balanceFee1)}\) ETH`);
     console.log(` - fee wallet 2 \(${ethers.formatEther(balanceFee2)}\) ETH`);
     console.log(` - fee wallet 3 \(${ethers.formatEther(balanceFee3)}\) ETH`);
   });
+
+  // call transfer function on contractA
+  const trxA = await contractA.transfer(
+    process.env.WALLET_B,
+    ethers.parseEther("30"),
+    { value: ethers.parseEther("30") },
+  );
+  const trxAReceipt = await trxA.wait();
+
+  // console.log(trxAReceipt.logs);
 }
 
 main().catch(console.error);
