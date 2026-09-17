@@ -23,5 +23,8 @@
     "prettier-plugin-solidity": "^2.4.1",
     "solidity-coverage": "^0.8.17",
     "typechain": "^8.3.0"
+  },
+  "scripts": {
+    "testNetwork": "yarn hardhat run scripts/blockNumber.js --network "
   }
 }
