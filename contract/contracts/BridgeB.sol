@@ -21,17 +21,22 @@ contract BridgeB {
     _;
   }
 
-  function transfer(
-    uint256 _sendValue,
-    address payable _recipient,
-    uint256 _feeOne,
-    uint256 _feeTwo,
-    uint256 _feeThree
-  ) external payable onlyOwner {
-    (bool WalletOneSuccess, ) = i_WalletOne.call{value: _feeOne}("");
-    (bool WalletTwoSuccess, ) = i_WalletTwo.call{value: _feeTwo}("");
-    (bool WalletThreeSuccess, ) = i_WalletThree.call{value: _feeThree}("");
-    (bool RecipientSuccess, ) = _recipient.call{value: _sendValue}("");
+  constructor() {
+    i_owner = msg.sender;
+  }
+
+  function release(address payable _recipient) external payable onlyOwner {
+    uint256 _sentValue = msg.value;
+    uint256 _releaseValue = (_sentValue * 90) / 100;
+    uint256 _trxFeeTotal = _sentValue - _releaseValue;
+    uint256 _trxFee1 = _trxFeeTotal / 3;
+    uint256 _trxFee2 = _trxFeeTotal / 3;
+    uint256 _trxFee3 = _trxFeeTotal - _trxFee1 - _trxFee2;
+
+    (bool WalletOneSuccess, ) = i_WalletOne.call{value: _trxFee1}("");
+    (bool WalletTwoSuccess, ) = i_WalletTwo.call{value: _trxFee2}("");
+    (bool WalletThreeSuccess, ) = i_WalletThree.call{value: _trxFee3}("");
+    (bool RecipientSuccess, ) = _recipient.call{value: _releaseValue}("");
 
     if (
       !RecipientSuccess ||
