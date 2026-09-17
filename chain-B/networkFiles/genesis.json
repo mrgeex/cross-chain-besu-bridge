@@ -18,7 +18,7 @@
     "fe3b557e8fb62b89f4916b721be55ceb828dbd73": {
       "privateKey": "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
       "comment": "main wallet chain B",
-      "balance": "0xad78ebc5ac6200000"
+      "balance": "1000000000000000000000000"
     },
     "0x813BF29E6a7833C5B9A8eAaf70C9151c323521bE": {
       "privateKey": "8fcc611a526f6fbc88b56c50b9ebecc72f6b84c8f6c977aeec612f9d13531c30",
