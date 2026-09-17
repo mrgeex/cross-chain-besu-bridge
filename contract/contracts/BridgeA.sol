@@ -8,12 +8,12 @@ contract BridgeA {
 
   event Locked(address indexed from, address indexed to, uint256 sendValue);
 
-  function transfer(address _recipient, uint256 _sendValue) external payable {
-    require(_sendValue >= MIN_VALUE);
+  function deposit(address _recipient) external payable {
+    require(msg.value >= MIN_VALUE);
 
     address _from = msg.sender;
     address _to = _recipient;
 
-    emit Locked(_from, _to, _sendValue);
+    emit Locked(_from, _to, msg.value);
   }
 }
