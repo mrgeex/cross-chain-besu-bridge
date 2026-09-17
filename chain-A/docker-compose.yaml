@@ -1,5 +1,5 @@
 x-besu-common: &besu-common
-  image: hyperledger/besu:latest
+  image: hyperledger/besu:26.2.0
   restart: unless-stopped
   command:
     - --genesis-file=/config/genesis.json
