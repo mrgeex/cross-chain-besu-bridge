@@ -40,24 +40,11 @@ async function main() {
       console.log(`  - to ${to}`);
       console.log(`  - amount ${ethers.formatEther(sendValue)} ETH`);
       console.log("----------------");
-      // >>>> Call transfer function on chain-B and set (to, 0.9 of the amount)
-      // >>>> Divide 0.1 of the amount to 3 and transfer to 3 commission wallets on chain-B
-      const receiveValue = (amount * 90n) / 100n;
-      const trxFee = amount - receiveValue;
-      const fee1 = trxFee / 3n;
-      const fee2 = trxFee / 3n;
-      const fee3 = trxFee - fee1 - fee2;
 
-      const trxB = await contractB.transfer(
-        receiveValue,
-        to,
-        fee1,
-        fee2,
-        fee3,
-        {
-          value: amount,
-        },
-      );
+      // >>>> Call release function on chain-B
+      const trxB = await contractB.release(to, {
+        value: amount,
+      });
       const trxReceiptB = await trxB.wait();
 
       // console.log(trxReceiptB);
