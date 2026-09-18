@@ -30,9 +30,10 @@ async function main() {
   );
 
   // listen for Locked event
-  contractA.once("Locked", async (from, to, sendValue, event) => {
+  contractA.once("Locked", async (transferID, from, to, sendValue, event) => {
     try {
       const amount = sendValue;
+      console.log(`\n\n>>TRXID>> ${transferID}\n\n`);
       console.log(
         `----${event.eventName} ${ethers.formatEther(amount)} ETH----`,
       );
@@ -42,7 +43,7 @@ async function main() {
       console.log("----------------");
 
       // >>>> Call release function on chain-B
-      const trxB = await contractB.release(to, {
+      const trxB = await contractB.release(transferID, to, {
         value: amount,
       });
       const trxReceiptB = await trxB.wait();
