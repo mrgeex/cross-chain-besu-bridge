@@ -72,7 +72,7 @@ The chain-B signing key must be the BridgeB deployer (only the owner can release
 From `contract/`:
 
 ```bash
-corepack yarn hardhat run scripts/relayer.js --network chain_a
+corepack yarn hardhat run scripts/relayer.js 
 ```
 
 One run deposits 1 ETH on chain A, observes `Locked`, and sends 1 ETH from the

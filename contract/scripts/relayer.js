@@ -33,7 +33,7 @@ async function main() {
   contractA.once("Locked", async (transferID, from, to, sendValue, event) => {
     try {
       const amount = sendValue;
-      console.log(`\n\n>>TRXID>> ${transferID}\n\n`);
+      console.log(`\n\n>>TXID>> ${transferID}\n\n`);
       console.log(
         `----${event.eventName} ${ethers.formatEther(amount)} ETH----`,
       );
@@ -43,12 +43,12 @@ async function main() {
       console.log("----------------");
 
       // >>>> Call release function on chain-B
-      const trxB = await contractB.release(transferID, to, {
+      const txB = await contractB.release(transferID, to, {
         value: amount,
       });
-      const trxReceiptB = await trxB.wait();
+      const txReceiptB = await txB.wait();
 
-      // console.log(trxReceiptB);
+      // console.log(txReceiptB);
 
       const balanceB = await chainB.getBalance(to);
       const balanceFee1 = await chainB.getBalance(process.env.FEE_WALLET1);
@@ -64,12 +64,12 @@ async function main() {
   });
 
   // call transfer function on contractA
-  const trxA = await contractA.deposit(process.env.WALLET_B, {
+  const txA = await contractA.deposit(process.env.WALLET_B, {
     value: ethers.parseEther("1"),
   });
-  const trxReceiptA = await trxA.wait();
+  const txReceiptA = await txA.wait();
 
-  // console.log(trxAReceipt.logs);
+  // console.log(txAReceipt.logs);
 }
 
 main().catch(console.error);
