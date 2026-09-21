@@ -9,7 +9,7 @@ contract BridgeA {
   mapping(address => uint256) private s_addressToValue;
 
   event Locked(
-    bytes32 transferID,
+    bytes32 indexed transferID,
     address indexed from,
     address indexed to,
     uint256 sendValue
@@ -20,7 +20,7 @@ contract BridgeA {
 
     nonce++;
     bytes32 _transferID = keccak256(
-      abi.encode(block.chainid, address(this), nonce)
+      abi.encode(block.chainid, address(this), msg.sender, _recipient, nonce)
     );
 
     emit Locked(_transferID, msg.sender, _recipient, msg.value);
