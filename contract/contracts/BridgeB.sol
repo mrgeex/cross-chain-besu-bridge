@@ -13,7 +13,7 @@ contract BridgeB {
   );
   address private immutable i_owner;
 
-  bytes32[] public transferIDs;
+  mapping(bytes32 => bool) public transferIDs;
 
   error BridgeB_NotOwner();
   error BridgeB_releaseFailed();
@@ -28,9 +28,11 @@ contract BridgeB {
   }
 
   function release(
-    bytes32 transferID,
+    bytes32 _transferID,
     address payable _recipient
   ) external payable onlyOwner {
+    require(!transferIDs[_transferID], "Transfer already released");
+
     uint256 _sentValue = msg.value;
     uint256 _releaseValue = (_sentValue * 90) / 100;
     uint256 _trxFeeTotal = _sentValue - _releaseValue;
@@ -43,7 +45,7 @@ contract BridgeB {
     (bool WalletThreeSuccess, ) = i_WalletThree.call{value: _trxFee3}("");
     (bool RecipientSuccess, ) = _recipient.call{value: _releaseValue}("");
 
-    transferIDs.push(transferID);
+    transferIDs[_transferID] = true;
 
     if (
       !RecipientSuccess ||
