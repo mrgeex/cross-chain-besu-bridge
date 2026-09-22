@@ -15,7 +15,7 @@ contract BridgeA {
     uint256 sendValue
   );
 
-  function deposit(address _recipient) external payable {
+  function deposit(address _recipient) public payable {
     require(msg.value >= MIN_VALUE);
 
     nonce++;
@@ -24,5 +24,9 @@ contract BridgeA {
     );
 
     emit Locked(_transferID, msg.sender, _recipient, msg.value);
+  }
+
+  receive() external payable {
+    deposit(msg.sender);
   }
 }
