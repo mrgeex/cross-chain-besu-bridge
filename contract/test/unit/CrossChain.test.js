@@ -19,7 +19,13 @@ describe("Testing Transfer from chain A to chain B", () => {
 
   it("", async () => {});
   describe(">> Chain_A", () => {
-    it("should accept at least 1 ETH", async () => {});
+    it("should accept at least 1 ETH", async () => {
+      await expect(
+        contractA.deposit(process.env.WALLET_B, {
+          value: ethers.parseEther("0.1"),
+        }),
+      ).to.be.reverted;
+    });
     it("should emit Locked event", async () => {}); // set values of (transferID, from, to) here
     it("should create different txIDs for the same user", async () => {});
   });
