@@ -8,7 +8,7 @@ contract BridgeA {
   string[] public transactions;
   mapping(address => uint256) private s_addressToValue;
 
-  event Locked(
+  event LogLocked(
     bytes32 indexed transferID,
     address indexed from,
     address indexed to,
@@ -23,7 +23,7 @@ contract BridgeA {
       abi.encode(block.chainid, address(this), msg.sender, _recipient, nonce)
     );
 
-    emit Locked(_transferID, msg.sender, _recipient, msg.value);
+    emit LogLocked(_transferID, msg.sender, _recipient, msg.value);
   }
 
   receive() external payable {
