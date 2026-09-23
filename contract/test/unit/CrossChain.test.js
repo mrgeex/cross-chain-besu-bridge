@@ -31,7 +31,10 @@ describe("Testing Transfer from chain A to chain B", () => {
   });
 
   describe(">> Chain_B", () => {
-    it("should set deployer as owner address", async () => {});
+    it("should set deployer as owner address", async () => {
+      const response = await contractB.getOwner();
+      assert.equal(response, signerB.address);
+    });
     it("should revert the same tx made twice", async () => {});
     it("should revert the release() made by attacker", async () => {});
     it("should revert tx if fee payments fail", () => {});
