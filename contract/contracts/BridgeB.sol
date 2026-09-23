@@ -54,4 +54,8 @@ contract BridgeB {
       !WalletThreeSuccess
     ) revert BridgeB_releaseFailed();
   }
+
+  function getOwner() external view returns (address) {
+    return i_owner;
+  }
 }
