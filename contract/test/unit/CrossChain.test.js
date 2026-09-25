@@ -72,7 +72,10 @@ describe("Testing Transfer from chain A to chain B", () => {
       const response = await contractB.getOwner();
       assert.equal(response, signerB.address);
     });
-    it("should revert the same tx made twice", async () => {});
+    it("should revert the same tx made twice", async () => {
+      await expect(contractB.release(transferID, to, { value: amount })).to.be
+        .reverted;
+    });
     it("only owner can call release()", async () => {
       const attacker = new ethers.Wallet(
         "d8527d7f9437c7d90a8271d652439d6fba9f8678da47aa02ce644680aae47e17",
