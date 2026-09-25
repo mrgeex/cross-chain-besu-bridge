@@ -46,7 +46,13 @@ describe("Testing Transfer from chain A to chain B", () => {
     it("should create different txIDs for the same user", async () => {});
   });
 
-  describe(">> Chain_B", () => {
+  describe(">> BridgeB", async () => {
+    let txB, receiptTxB;
+    before(async () => {
+      txB = await contractB.release(transferID, to, { value: amount });
+      receiptTxB = await txB.wait();
+    });
+
     it("should set deployer as owner address", async () => {
       const response = await contractB.getOwner();
       assert.equal(response, signerB.address);
