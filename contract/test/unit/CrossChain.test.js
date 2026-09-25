@@ -33,7 +33,16 @@ describe("Testing Transfer from chain A to chain B", () => {
         }),
       ).to.be.reverted;
     });
-    it("should emit Locked event", async () => {}); // set values of (transferID, from, to) here
+    it("should emit Locked event", async () => {
+      // set values of (transferID, from, to) here
+      for (const log of receiptTxA.logs) {
+        const parsedLog = contractA.interface.parseLog(log);
+
+        assert.equal(parsedLog.name, "LogLocked");
+        if (parsedLog.name === "LogLocked")
+          [transferID, from, to, amount] = parsedLog.args;
+      }
+    });
     it("should create different txIDs for the same user", async () => {});
   });
 
