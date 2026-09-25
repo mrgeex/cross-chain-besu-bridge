@@ -43,7 +43,22 @@ describe("Testing Transfer from chain A to chain B", () => {
           [transferID, from, to, amount] = parsedLog.args;
       }
     });
-    it("should create different txIDs for the same user", async () => {});
+    it("should create different txIDs for the same user", async () => {
+      let _transferIdAgain;
+      const _txAgain = await contractA.deposit(process.env.WALLET_B, {
+        value: ethers.parseEther("30"),
+      });
+      const _receiptTxAgain = await _txAgain.wait();
+
+      for (const log of _receiptTxAgain.logs) {
+        const parsedLog = contractA.interface.parseLog(log);
+
+        if (parsedLog.name === "LogLocked")
+          _transferIdAgain = parsedLog.args[0];
+
+        assert.notEqual(transferID, _transferIdAgain);
+      }
+    });
   });
 
   describe(">> BridgeB", async () => {
