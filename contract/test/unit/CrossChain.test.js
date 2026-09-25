@@ -6,7 +6,8 @@ import bridgeB from "../../deployments/chain_b/BridgeB.json" with { type: "json"
 const { ethers } = hre;
 
 describe("Testing Transfer from chain A to chain B", () => {
-  let transferID, from, to;
+  let transferID, from, to, amount;
+  let txA, receiptTxA;
   // make connection to chains and contracts
   const chainA = new ethers.JsonRpcProvider(process.env.CHAIN_A_RPC_URL);
   const chainB = new ethers.JsonRpcProvider(process.env.CHAIN_B_RPC_URL);
@@ -17,8 +18,14 @@ describe("Testing Transfer from chain A to chain B", () => {
   const contractA = new ethers.Contract(bridgeA.address, bridgeA.abi, signerA);
   const contractB = new ethers.Contract(bridgeB.address, bridgeB.abi, signerB);
 
-  it("", async () => {});
-  describe(">> Chain_A", () => {
+  before(async () => {
+    txA = await contractA.deposit(process.env.WALLET_B, {
+      value: ethers.parseEther("30"),
+    });
+    receiptTxA = await txA.wait();
+  });
+
+  describe(">> BridgeA", () => {
     it("should accept at least 1 ETH", async () => {
       await expect(
         contractA.deposit(process.env.WALLET_B, {
