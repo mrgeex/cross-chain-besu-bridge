@@ -77,22 +77,17 @@ describe("Testing Transfer from chain A to chain B", () => {
         .reverted;
     });
     it("only owner can call release()", async () => {
-      const attacker = new ethers.Wallet(
-        "d8527d7f9437c7d90a8271d652439d6fba9f8678da47aa02ce644680aae47e17",
-        chainB,
+      const attacker = new ethers.Wallet(process.env.WALLET_B_PRIV_KEY, chainB);
+      const contractBAttacker = new ethers.Contract(
+        bridgeB.address,
+        bridgeB.abi,
+        attacker,
       );
-      const contractBAttacker = await contractB.connect(attacker);
-
-      console.log(`>>>>>${attacker.address}`);
 
       await expect(
-        contractBAttacker.release(
-          "0xfbc654eae8a1cf25a50b472d5e2c0d67548fbf51747de872623d10a7d5cff3f0",
-          attacker.address,
-          {
-            value: ethers.parseEther("1"),
-          },
-        ),
+        contractBAttacker.release(transferID, attacker.address, {
+          value: ethers.parseEther("1"),
+        }),
       ).to.be.revertedWithCustomError(contractB, "BridgeB_NotOwner");
     });
     it("should revert tx if fee payments fail", () => {});
